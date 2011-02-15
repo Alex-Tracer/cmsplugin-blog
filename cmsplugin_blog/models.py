@@ -11,6 +11,7 @@ from cms.models import CMSPlugin
 
 import tagging
 from tagging.fields import TagField
+from tagging.models import Tag
 
 from simple_translation.actions import SimpleTranslationPlaceholderActions
 from djangocms_utils.fields import M2MPlaceholderField
@@ -84,3 +85,19 @@ class LatestEntriesPlugin(CMSPlugin):
                     help_text=_('Limits the number of items that will be displayed'))
                     
     current_language_only = models.BooleanField(_('Only show entries for the current language'))
+
+class LatestTaggedEntriesPlugin(CMSPlugin):
+    LIMITS = (
+        (0, _('without limit')),
+        (65, 65)
+    )
+    DISPLAY_TYPES = (
+        ('list', _('list')),
+        ('paragraphs', _('paragraphs'))
+    )
+    limit = models.PositiveIntegerField(_('Number of entries items to show'), 
+        help_text=_('Limits the number of items that will be displayed'))
+    characters_limit = models.PositiveSmallIntegerField(_('Number of characters to show'), 
+        help_text=_('Limits the number of item characters that will be displayed'), choices= LIMITS)
+    display_type = models.CharField(_('Display type'), max_length=32, choices=DISPLAY_TYPES)
+    tag = models.ForeignKey(Tag, verbose_name=_('tag'))

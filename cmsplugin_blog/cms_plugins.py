@@ -2,7 +2,10 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
 
-from cmsplugin_blog.models import LatestEntriesPlugin, Entry
+from cmsplugin_blog.models import LatestEntriesPlugin, Entry, LatestTaggedEntriesPlugin
+
+from tagging.models import TaggedItem
+from tagging.utils import get_tag
 
 class CMSLatestEntriesPlugin(CMSPluginBase):
     """
@@ -32,3 +35,26 @@ class CMSLatestEntriesPlugin(CMSPluginBase):
         return context
 
 plugin_pool.register_plugin(CMSLatestEntriesPlugin)
+
+class CMSLatestTaggedEntriesPlugin(CMSPluginBase):
+    model = LatestTaggedEntriesPlugin
+    name = _('Latest tagged entries')
+    render_template = "cmsplugin_blog/latest_tagged.html"
+    
+    def render(self, context, instance, placeholder):
+        queryset = Entry.objects.all()
+        tag_instance = get_tag(instance.tag)
+        queryset = TaggedItem.objects.get_by_model(queryset, tag_instance)
+        if instance.limit:
+            queryset = queryset[:instance.limit]
+        context.update({
+            'latest': queryset,
+            'tag': instance.tag,
+            'display_type': instance.display_type
+        })
+        if instance.characters_limit:
+            context.update({'string_slice': ':%d' % instance.characters_limit})
+        
+        return context
+        
+plugin_pool.register_plugin(CMSLatestTaggedEntriesPlugin)
