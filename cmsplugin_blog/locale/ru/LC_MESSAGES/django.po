@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-15 14:17+0300\n"
-"PO-Revision-Date: 2011-02-15 14:29+0300\n"
+"POT-Creation-Date: 2011-02-16 15:30+0300\n"
+"PO-Revision-Date: 2011-02-16 15:32+0300\n"
 "Last-Translator: Gleb Chipiga <gleb.chipiga@gmail.com>\n"
 "Language-Team: Russian <gleb.chipiga@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -22,9 +22,13 @@ msgstr ""
 msgid "Blog Apphook"
 msgstr "Блог"
 
-#: cms_plugins.py:12 templates/cmsplugin_blog/entry_archive.html:5
+#: cms_plugins.py:15 templates/cmsplugin_blog/entry_archive.html:5
 msgid "Latest entries"
 msgstr "Последние записи"
+
+#: cms_plugins.py:41
+msgid "Latest tagged entries"
+msgstr "Последние записи c тегом"
 
 #: feeds.py:36 feeds.py:47
 msgid "Blog entries"
@@ -35,63 +39,91 @@ msgstr "Записи блога"
 msgid "Blog entries in %s"
 msgstr "Записи блога на %s"
 
-#: feeds.py:71
+#: feeds.py:74
 #, python-format
 msgid "%(title)s tagged \"%(tag)s\""
 msgstr "%(title)s с тегом \"%(tag)s\""
 
-#: feeds.py:83
+#: feeds.py:86
 #, python-format
 msgid "%(description)s tagged \"%(tag)s\""
 msgstr "%(description)s с тегом \"%(tag)s\""
 
-#: models.py:38
+#: models.py:39
 msgid "Is published"
 msgstr "Опубликована"
 
-#: models.py:39
+#: models.py:40
 msgid "Published"
 msgstr "Опубликована"
 
-#: models.py:49 models.py:56
+#: models.py:50 models.py:57
 msgid "Entry"
 msgstr "Запись"
 
-#: models.py:50
+#: models.py:51
 msgid "Entries"
 msgstr "Записи"
 
-#: models.py:57
+#: models.py:58
 msgid "Language"
 msgstr "Язык"
 
-#: models.py:58
+#: models.py:59
 msgid "Title"
 msgstr "Заголовок"
 
-#: models.py:59
+#: models.py:60
 msgid "Slug"
 msgstr "Slug"
 
-#: models.py:76
+#: models.py:77
 msgid "Entry title"
 msgstr "Заголовок записи"
 
-#: models.py:77
+#: models.py:78
 msgid "Entry titles"
 msgstr "Заголовки записей"
 
-#: models.py:83
+#: models.py:84 models.py:98
 msgid "Number of entries items to show"
 msgstr "Количество отображаемых записей"
 
-#: models.py:84
+#: models.py:85 models.py:99
 msgid "Limits the number of items that will be displayed"
 msgstr "Ограничение количества отображаемых записей"
 
-#: models.py:86
+#: models.py:87
 msgid "Only show entries for the current language"
 msgstr "Показывать записи только на текущем языке"
+
+#: models.py:91
+msgid "without limit"
+msgstr "неограниченно"
+
+#: models.py:95
+msgid "list"
+msgstr "список"
+
+#: models.py:96
+msgid "paragraphs"
+msgstr "абзацы"
+
+#: models.py:100
+msgid "Number of characters to show"
+msgstr "Количество отображаемых символов"
+
+#: models.py:101
+msgid "Limits the number of item characters that will be displayed"
+msgstr "Ограничение количества отображаемых символов"
+
+#: models.py:102
+msgid "Display type"
+msgstr "Отображение"
+
+#: models.py:103
+msgid "tag"
+msgstr "тег"
 
 #: templates/cmsplugin_blog/entry_archive.html:14
 #: templates/cmsplugin_blog/latest_entries.html:7
