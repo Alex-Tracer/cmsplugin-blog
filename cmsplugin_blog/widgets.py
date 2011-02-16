@@ -10,9 +10,12 @@ class AutoCompleteTagInput(forms.TextInput):
         css = {
             'all': (settings.JQUERY_UI_CSS,)
         }
-        #js = (
-            #settings.JQUERY_JS, settings.JQUERY_UI_JS
-        #)
+        js = (
+            'js/move_jquery.js',
+            settings.JQUERY_JS,
+            settings.JQUERY_UI_JS,
+            'js/init_jquery.js'
+        )
 
     def render(self, name, value, attrs=None):
         output = super(AutoCompleteTagInput, self).render(name, value, attrs)
@@ -26,38 +29,22 @@ class AutoCompleteTagInput(forms.TextInput):
             }
             </style>
             <script type="text/javascript">
-            if (jQuery) {
-              var jq_copy = jQuery.noConflict(true);
-            }
-            </script>
-            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
-            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-            <script type="text/javascript">
-            var ac_jq = jQuery.noConflict(true);
-            if (jq_copy) {
-              jQuery = jq_copy;
-            }
-            function comma_split(val) {
-              return val.split(/,\s*/);
-            }
-            function extract_last(term) {
-              return comma_split(term).pop();
-            }
-            function ac_select(event, ui) {
-              var terms = comma_split(event.target.value);
-              terms.pop();
-              terms.push(ui.item.value);
-              terms.push('');
-              event.target.value = terms.join(', ');
-              return false;
-            }
-            ac_jq("#id_%s").autocomplete({
+            autocomplete_jq("#id_%s").autocomplete({
               source: function(request, response) {
-                var term = extract_last(request.term);
-                var current = comma_split(request.term);
+                var term = request.term.split(/,\s*/).pop();
+                var current = request.term.split(/,\s*/);
                 list = %s;
-                response(ac_jq.grep(list, function(el){ return el.indexOf(term) == 0 && ac_jq.inArray(el, current)}));
+                response(autocomplete_jq.grep(list, function(el){
+                  return el.indexOf(term) == 0 && autocomplete_jq.inArray(el, current);
+                }));
               },
-              select: ac_select
+              select: function(event, ui) {
+                var terms = event.target.value.split(/,\s*/);
+                terms.pop();
+                terms.push(ui.item.value);
+                terms.push('');
+                event.target.value = terms.join(', ');
+                return false;
+              }
             });
             </script>''' % (name, tag_list))
