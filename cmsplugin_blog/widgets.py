@@ -25,10 +25,18 @@ class AutoCompleteTagInput(forms.TextInput):
               list-style-type: none;
             }
             </style>
-            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.5/jquery.min.js"></script>
+            <script type="text/javascript">
+            if (jQuery) {
+              var jq_copy = jQuery.noConflict(true);
+            }
+            </script>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
             <script type="text/javascript">
             var ac_jq = jQuery.noConflict(true);
+            if (jq_copy) {
+              jQuery = jq_copy;
+            }
             function comma_split(val) {
               return val.split(/,\s*/);
             }
