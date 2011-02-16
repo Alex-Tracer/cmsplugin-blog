@@ -46,6 +46,7 @@ class AutoCompleteTagInput(forms.TextInput):
             ac_jq("#id_%s").autocomplete({
               source: function(request, response) {
                 var term = extract_last(request.term);
+                var current = comma_split(request.term);
                 list = %s;
                 response(ac_jq.grep(list, function(el){ return el.indexOf(term) == 0 && ac_jq.inArray(el, current)}));
               },
