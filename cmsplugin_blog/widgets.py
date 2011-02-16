@@ -10,25 +10,45 @@ class AutoCompleteTagInput(forms.TextInput):
         css = {
             'all': (settings.JQUERY_UI_CSS,)
         }
-        js = (
-            settings.JQUERY_JS, settings.JQUERY_UI_JS
-        )
+        #js = (
+            #settings.JQUERY_JS, settings.JQUERY_UI_JS
+        #)
 
     def render(self, name, value, attrs=None):
         output = super(AutoCompleteTagInput, self).render(name, value, attrs)
         page_tags = Tag.objects.usage_for_model(Entry)
         tag_list = simplejson.dumps([tag.name for tag in page_tags],
                                     ensure_ascii=False)
-        return output + mark_safe(u'''<script type="text/javascript">
-            jQuery("#id_%s").autocomplete(%s, {
-                width: 150,
-                max: 10,
-                highlight: false,
-                multiple: true,
-                multipleSeparator: ", ",
-                scroll: true,
-                scrollHeight: 300,
-                matchContains: true,
-                autoFill: true,
+        return output + mark_safe(u'''
+            <style type="text/css">
+            .ui-autocomplete li {
+              list-style-type: none;
+            }
+            </style>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.5/jquery.min.js"></script>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+            <script type="text/javascript">
+            var ac_jq = jQuery.noConflict(true);
+            function comma_split(val) {
+              return val.split(/,\s*/);
+            }
+            function extract_last(term) {
+              return comma_split(term).pop();
+            }
+            function ac_select(event, ui) {
+              var terms = comma_split(event.target.value);
+              terms.pop();
+              terms.push(ui.item.value);
+              terms.push('');
+              event.target.value = terms.join(', ');
+              return false;
+            }
+            ac_jq("#id_%s").autocomplete({
+              source: function(request, response) {
+                var term = extract_last(request.term);
+                list = %s;
+                response(ac_jq.grep(list, function(el){ return el.indexOf(term) == 0 && ac_jq.inArray(el, current)}));
+              },
+              select: ac_select
             });
             </script>''' % (name, tag_list))
