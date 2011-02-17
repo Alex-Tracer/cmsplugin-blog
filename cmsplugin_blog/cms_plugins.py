@@ -53,7 +53,7 @@ class CMSLatestTaggedEntriesPlugin(CMSPluginBase):
             'display_type': instance.display_type
         })
         if instance.characters_limit:
-            context.update({'string_slice': ':%d' % instance.characters_limit})
+            context.update({'char_limit': instance.characters_limit})
         
         return context
         

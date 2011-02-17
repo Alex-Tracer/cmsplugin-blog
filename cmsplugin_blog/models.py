@@ -89,7 +89,8 @@ class LatestEntriesPlugin(CMSPlugin):
 class LatestTaggedEntriesPlugin(CMSPlugin):
     LIMITS = (
         (0, _('without limit')),
-        (65, 65)
+        (65, 65),
+        (500, 500)
     )
     DISPLAY_TYPES = (
         ('list', _('list')),
